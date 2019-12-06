@@ -1,6 +1,11 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/doitdb',{ useNewUrlParser: true });
+mongoose.connect('mongodb://localhost/airbus',{ useNewUrlParser: true });
 var ForumSchema = new mongoose.Schema({
+    
+    id:Number,
+    subject:String
+    
+    /*
     id:Number,
     question: [{
         qnumber:Number,
@@ -11,6 +16,7 @@ var ForumSchema = new mongoose.Schema({
         }]
     }]
 
+    */
 });
 
 

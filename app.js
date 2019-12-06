@@ -6,7 +6,8 @@ const express    = require('express'),
       passportLocalMongoose = require('passport-local-mongoose'),
       bodyParser  = require('body-parser'),
       methodOverride  = require("method-override"),
-      User       = require("./database/mongomodels/user.js");
+      User       = require("./database/mongomodels/user.js"),
+      Forum      = require("./database/mongomodels/forum");
 
 
 
@@ -118,6 +119,98 @@ app.get("/chatbot",function(req,res){
 
 
 
+
+
+
+// --------------------------CRUD-----------------------------
+
+
+
+// create
+
+app.get("/additem",function(req,res){
+
+       //
+       var itemdetail = req.query.subject;
+       var itemid = req.query.id;
+       
+       console.log("-------");
+       // create an object of database model
+
+          Forum.create({subject:itemdetail,id:itemid},function (err,result) {
+            if(!err){
+                console.log(result);
+                res.send("success save ");
+
+
+            }
+            if(err){
+                console.log(err);
+            }
+            console.log("error occured");
+});
+      
+
+
+
+
+
+});
+
+
+
+
+// Read
+
+app.get("/getitem",function(req,res){
+
+    var id = req.query.id;
+    Forum.find({id:id},function(err,result){
+         if(!err){
+
+            res.send(JSON.stringify({'result':result}));
+         }
+
+    });
+});
+
+
+// update
+
+app.get("/updateitem",function(req,res){
+
+    var id = req.query.id;
+    var updateinfo = req.query.updateinfo;
+    
+
+    Forum.updateOne({id:id},{$set:{subject:updateinfo}},function(err,result){
+
+        if(!err){
+            console.log("done update");
+            res.send("success");
+        }
+});
+
+});
+
+
+// Delete
+
+app.get("/deleteitem",function(req,res){
+
+     var id=req.query.id;
+     Forum.findOneAndDelete({id:id},function(err,result){
+         if(!err){
+             console.log(result);
+             res.send("sucess");
+         }
+     })
+
+})
+      
+
+
+      
 
 app.listen(3000,function(req,res){
     console.log("server started");

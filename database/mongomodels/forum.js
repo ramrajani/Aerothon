@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/airbus',{ useNewUrlParser: true });
 var ForumSchema = new mongoose.Schema({
     
-    id:Number,
+    
     subject:String
     
     /*

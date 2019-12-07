@@ -217,6 +217,6 @@ app.post("/deleteitem",function(req,res){
 
 })   
 
-app.listen(3000,function(req,res){
+app.listen(process.env.PORT,function(req,res){
     console.log("server started");
 });

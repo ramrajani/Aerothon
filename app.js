@@ -223,7 +223,6 @@ app.post("/deleteitem",function(req,res){
 
 })   
 
-// app.post("/addFlight",function(req,res){
 
 //     //
 //     var itemdetail = req.body.subject;
@@ -248,40 +247,6 @@ app.post("/deleteitem",function(req,res){
 //         route.push(newstop);
 //     }
   
-
-
-
-
-//     //var itemid = req.query.id;
-    
-//     console.log("-------");
-//     // create an object of database model
-
-//         Forum.create({subject:itemdetail},function (err,result) {
-//         if(!err){
-//             console.log(result);
-//             res.json({err: false});
-//         }
-//         if(err){
-//             console.log(err);
-//             res.json({err: true, message: err.message});
-//         }
-//         console.log("error occured");
-//     });
-// });
-
-
-
-
-app.get("/getlocation",function(req,res){
-
-    Location.find({},function(err,result){
-        if(!err)
-        res.send({result:result});
-    })
-})
-
-app.get("/findFlight",function(req,res){
 
     var destination=req.body.des;
     var out=[]

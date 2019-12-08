@@ -10,11 +10,9 @@ var FlightSchema = new mongoose.Schema({
     originTime:String,
     desDate:String,
     desTime:String,
-    destination:String,
-    route:[{inbetrounam:String,stoptime:String,stopnum:Number}],
-    Fare:[{economy:Number,Business:Number}]
-
-
+    destination:String
+    
+    
 });
 
 

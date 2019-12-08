@@ -284,7 +284,31 @@ app.get("/getlocation",function(req,res){
     })
 })
 
+app.post("/findFlight",function(req,res){
 
+     var destination=req.body.des;
+     var out=[]
+    flight.find({origin:req.body.src},function(err,result){
+
+         
+        result.forEach(element){
+            if(element.destination==req.body.des){
+               out.push(element);
+            }else{
+                flight.find({origin:element.destination,destination:req.body.destination},function(err,result){
+                    result.forEach(ele){
+                        out.push(ele);
+                    }
+                })
+            }
+        }
+          
+
+    });
+     
+     res.json({result:out});
+
+});
 
 app.listen(process.env.PORT,function(req,res){
     console.log("server started");

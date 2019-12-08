@@ -7,7 +7,9 @@ const express    = require('express'),
       bodyParser  = require('body-parser'),
       methodOverride  = require("method-override"),
       User       = require("./database/mongomodels/user.js"),
-      Forum      = require("./database/mongomodels/forum");      
+      Forum      = require("./database/mongomodels/forum"),
+      Location      = require("./database/mongomodels/location"),
+      Flight = require("./database/mongomodels/flight")    
       
 app.set("view engine","ejs");
 app.use(bodyParser.urlencoded({extended:true}));
@@ -91,12 +93,16 @@ app.get("/logout",function(req,res){
 
 // -----------------------------------------------------------------------------------------------
 
-app.get("/",function(req,res){
-    if (!req.query.loginError)
-        res.render("login",{LoginError: false});
-    else
-        res.render("login", {LoginError: true});
-});
+// app.get("/",function(req,res){
+//     if (!req.query.loginError)
+//         res.render("login",{LoginError: false});
+//     else
+//         res.render("login", {LoginError: true});
+// });
+
+app.get('/', function(req, res){
+    res.render('landing');
+})
 
 app.get("/dash", function(req, res){
     res.render("dash", {CurrentUser: req.user});
@@ -216,6 +222,94 @@ app.post("/deleteitem",function(req,res){
      })
 
 })   
+
+// app.post("/addFlight",function(req,res){
+
+//     //
+//     var itemdetail = req.body.subject;
+     
+//     var flightNum=req.body.num,
+//     var company =req.body.company,
+//     var origin=req.body.origin,
+//     var originDate=req.body.origin,
+//     var originTime=req.body.origin,
+//     var  desDate=req.body.origin,
+//     var desTime=req.body.origin,
+//     var destination=req.body.origin,
+    
+//     var roulen=route.length;
+//     var route=[];
+//     for(i in route){
+//         var newstop= {};
+//         newstop.inbetrounam=i.inbetrounam;
+//         newstop.stopTime=i.stoptime;
+//         newstop.stopDate=i.stopDate;
+//         newstop.stopnum=i.stopnum;
+//         route.push(newstop);
+//     }
+  
+
+
+
+
+//     //var itemid = req.query.id;
+    
+//     console.log("-------");
+//     // create an object of database model
+
+//         Forum.create({subject:itemdetail},function (err,result) {
+//         if(!err){
+//             console.log(result);
+//             res.json({err: false});
+//         }
+//         if(err){
+//             console.log(err);
+//             res.json({err: true, message: err.message});
+//         }
+//         console.log("error occured");
+//     });
+// });
+
+
+
+
+app.get("/getlocation",function(req,res){
+
+    Location.find({},function(err,result){
+        if(!err)
+        res.send({result:result});
+    })
+})
+
+app.get("/findFlight",function(req,res){
+
+    var destination=req.body.des;
+    var out=[]
+    //console.log(req.query);
+    Flight.find({origin:"Srinagar"},function(err,result){
+
+        console.log(result);         
+        result.forEach(element => {
+            if(element.destination==req.query.des){
+                out.push(element);
+             }else{
+                 Flight.find({origin:element.destination,destination:req.query.destination},function(err,result){
+                     result.forEach(ele =>{
+                         out.push(ele);
+                     });
+                 })
+             }
+        })
+            
+        
+          
+
+    });
+     
+     res.json({result:out});
+
+});
+
 
 app.listen(3000,function(req,res){
     console.log("server started");

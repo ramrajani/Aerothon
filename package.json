@@ -18,6 +18,7 @@
   "homepage": "https://github.com/ramrajani/doit#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "bootstrap-select": "^1.13.12",
     "cheerio": "^1.0.0-rc.2",
     "cheerio-eq": "^1.0.1",
     "ejs": "^2.6.1",

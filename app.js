@@ -247,11 +247,11 @@ app.post("/deleteitem",function(req,res){
 //         route.push(newstop);
 //     }
   
-
+app.get('/findFlight', function(req, res){
     var destination=req.body.des;
     var out=[]
     //console.log(req.query);
-    Flight.find({origin:"Srinagar"},function(err,result){
+    Flight.find({origin:"NewDelhi"},function(err,result){
 
         console.log(result);         
         result.forEach(element => {

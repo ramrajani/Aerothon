@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/airbus',{ useNewUrlParser: true });
+mongoose.connect('mongodb+srv://ram-rajani:gocashless@cluster0-dnfuy.mongodb.net/test?retryWrites=true&w=majority',{ useNewUrlParser: true });
 var ForumSchema = new mongoose.Schema({
     
-    id:Number,
+    
     subject:String
     
     /*

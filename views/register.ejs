@@ -1,87 +1,89 @@
-<% include partials/header.ejs %>
-<% include partials/middle.ejs %>
-    <div class="col-8 mx-auto mb-3">
-		<div class="card mt-3">
-		  <div class="card-header text-center">
-		    <h4><strong>User SignUp</strong></h4>
-		  </div>
-		<form id="login-form" class="form" action="/register" method="POST">  
-		  <div class="card-body col-9 mx-auto">
-		  	<div class="row">	
-	            <div class="col-6 md-form form-sm mb-4">
-	                <input type="text" id="name" class="form-control form-control-sm validate" name="name" required>
-	                <label data-error="wrong" data-success="right" for="name">Enter Name</label>
-	            </div>
-		  		<div class="col-6 md-form form-sm mb-4 float-right">
-	                <input type="email" id="email" class="form-control form-control-sm validate" name="id" required>
-	                <label data-error="wrong" data-success="right" for="email">Enter Email</label>
-	            </div>
-	        </div>
-	        <div class="row">
-	        	<div class="col-6 md-form form-sm mb-4">
-	                <input type="password" id="password" class="form-control form-control-sm validate" name="password" required>
-	                <label data-error="wrong" data-success="right" for="password">Enter Password</label>
-	            </div>
-	            <div class="col-6 md-form form-sm mb-4">
-	                <input type="number" id="income" class="form-control form-control-sm validate" name="income" required>
-	                <label  data-error="wrong" data-success="right" for="income">Enter Income:</label>
-	            </div>
-	        </div>
-	        <div class="row">
-	        	<div class="col-6 md-form form-sm mb-4">
-	                <input type="text" id="10" class="form-control form-control-sm validate" name="ssc">
-	                <label data-error="wrong" data-success="right" for="10">Enter SSC %:</label>
-	            </div>
-	        	<div class="col-6 md-form form-sm mb-4">
-	                <input type="text" id="12" class="form-control form-control-sm validate" name="hsc">
-	                <label data-error="wrong" data-success="right" for="12">Enter HSC %:</label>
-	            </div>
-	            
-	        </div>
-	        <div class="row">
-	        	<div class="col-6 md-form form-sm mb-4">
-	                <input type="text" id="graduation" class="form-control form-control-sm validate" name="graduation">
-	                <label data-error="wrong" data-success="right" for="graduation">Enter Graduation Pointer:</label>
-	            </div>
-	        	<div class="col-6 md-form form-sm mb-4">
-		        	<select class="browser-default custom-select" id="category" name="category">
-					  <option selected>Choose Category</option>
-					  <option value="SC">SC</option>
-					  <option value="ST">ST</option>
-					  <option value="OBC">OBC</option>
-					  <option value="EBC">EBC</option>
-					  <option value="General">General</option>
-					</select>
-	        	</div>
-	        </div>
-	        <div class="row">
-	        	<div class="col-6 md-form form-sm mb-4">
-	                <input type="text" id="branch" class="form-control form-control-sm validate" name="branch">
-	                <label data-error="wrong" data-success="right" for="branch">Enter Branch:</label>
-	            </div>
-	        	<div class="col-6 md-form form-sm mb-4">
-	                <input type="text" id="state" class="form-control form-control-sm validate" name="state">
-	                <label data-error="wrong" data-success="right" for="state">Enter State or India(for all states):</label>
-	            </div>
-	            
-	        </div>
-	        
-	        <div class="row">
-	        	<button class="btn btn-outline-primary mx-auto" style="border-radius: 25px;" type="submit">SignUp</button>
-	        </div>
-		  </div>
-		  </form>
-		</div>
-	</div>
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
 
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	<!-- Bootstrap tooltips -->
-  	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-  	<!-- Bootstrap core JavaScript -->
-  	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  	<!-- MDB core JavaScript -->
-  	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.4/js/mdb.min.js"></script>
+  <title>SB Admin 2 - Register</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+
+  <div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-5 d-none d-lg-block bg-login-image"></div>
+          <div class="col-lg-7">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+              </div>
+              <form class="user" method="POST" action="/register">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" name="name" class="form-control form-control-user" id="exampleFirstName" placeholder="Full Name" required>
+                  </div>
+                  
+                </div>
+                <div class="form-group">
+                  <input type="email" name='id' class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                  </div>
+                  <!-- <div class="col-sm-6">
+                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                  </div> -->
+                </div>
+                <button type="submit" class="btn btn-primary btn-user btn-block">
+                  Register Account
+								</button>
+								<% if (Message) {%>
+									<div class='text-center'><%= Message %></div>
+								<%}%>
+                <hr>
+              </form>
+              <div class="text-center">
+                <a class="small" href="forgot-password.html">Forgot Password?</a>
+              </div>
+              <div class="text-center">
+                <a class="small" href="/">Already have an account? Login!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
 </body>
+
 </html>

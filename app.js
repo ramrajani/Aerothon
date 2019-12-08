@@ -7,13 +7,7 @@ const express    = require('express'),
       bodyParser  = require('body-parser'),
       methodOverride  = require("method-override"),
       User       = require("./database/mongomodels/user.js"),
-      Forum      = require("./database/mongomodels/forum");
-
-
-
-      
-      
-      
+      Forum      = require("./database/mongomodels/forum");      
       
 app.set("view engine","ejs");
 app.use(bodyParser.urlencoded({extended:true}));
@@ -31,6 +25,7 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.use(express.static(__dirname + '/styles'));
+app.use(express.static(__dirname + '/views'));
 app.use(morgan('combined'));
 
 
@@ -48,16 +43,13 @@ function isLoggedIn(req,res,next){
 //-----------------------------------------------------------------------------------------------
 //login routes
 
-//   Login routes using passport
+//Login routes using passport
 
 //show sign up page
 app.get("/signup",function(req,res){
     
-   res.render("register",{CurrentUser:req.user});
+   res.render("register",{CurrentUser:req.user, Message: 'no'});
 });
-
-
-
 
 // register route 
 app.post("/register",function(req,res){
@@ -70,11 +62,12 @@ console.log(req.body);
        }),req.body.password,function(err,user){
                 if(err){
                     console.log(err);
-                    return res.render("index");
+                    return res.render("register", {Message: err.message});
                 }
-                passport.authenticate("local")(req,res,function(){
-                      res.redirect("/");
-                });
+                // passport.authenticate("local")(req,res,function(){
+                //       res.redirect("/" );
+                // });
+                res.redirect("/" );
     });
  
 
@@ -82,10 +75,10 @@ console.log(req.body);
  
  // login route
 app.post("/login",passport.authenticate("local",{
-    successRedirect:"/",
-    failureRedirect:"/india"
+    successRedirect:"/dash",
+    failureRedirect:"/?loginError=true"
 }),function(req,res){
-
+    res.render("login", {LoginError: true});
 
 });
 // logout route
@@ -99,9 +92,19 @@ app.get("/logout",function(req,res){
 // -----------------------------------------------------------------------------------------------
 
 app.get("/",function(req,res){
-   res.render("index",{CurrentUser:req.user}); 
+    if (!req.query.loginError)
+        res.render("login",{LoginError: false});
+    else
+        res.render("login", {LoginError: true});
 });
 
+app.get("/dash", function(req, res){
+    res.render("dash", {CurrentUser: req.user});
+})
+
+app.get("/table", function(req, res){
+    res.render("tables", {CurrentUser: req.user});
+})
 
 
 
@@ -109,11 +112,11 @@ app.get("/",function(req,res){
 // api's
 
 
-app.get("/dashboard",function(req,res){
+app.get("/dashboard",isAuthenticated,function(req,res){
     res.render("dashboard",{CurrentUser:req.user});
 })
 
-app.get("/chatbot",function(req,res){
+app.get("/chatbot",isAuthenticated,function(req,res){
     res.render("chatbot",{CurrentUser:req.user});
 })
 
@@ -124,37 +127,42 @@ app.get("/chatbot",function(req,res){
 
 // --------------------------CRUD-----------------------------
 
+function isAuthenticated(req, res, next) {
+    // do any checks you want to in here
+  
+    // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE
+    // you can do this however you want with whatever variables you set up
+    if (req.isAuthenticated())
+        return next();
+  
+    // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
+    res.redirect('/');
+  }
+
 
 
 // create
 
-app.get("/additem",function(req,res){
+app.post("/additem",isAuthenticated,function(req,res){
 
-       //
-       var itemdetail = req.query.subject;
-       var itemid = req.query.id;
-       
-       console.log("-------");
-       // create an object of database model
+    //
+    var itemdetail = req.body.subject;
+    //var itemid = req.query.id;
+    
+    console.log("-------");
+    // create an object of database model
 
-          Forum.create({subject:itemdetail,id:itemid},function (err,result) {
-            if(!err){
-                console.log(result);
-                res.send("success save ");
-
-
-            }
-            if(err){
-                console.log(err);
-            }
-            console.log("error occured");
-});
-      
-
-
-
-
-
+        Forum.create({subject:itemdetail},function (err,result) {
+        if(!err){
+            console.log(result);
+            res.json({err: false});
+        }
+        if(err){
+            console.log(err);
+            res.json({err: true, message: err.message});
+        }
+        console.log("error occured");
+    });
 });
 
 
@@ -162,14 +170,15 @@ app.get("/additem",function(req,res){
 
 // Read
 
-app.get("/getitem",function(req,res){
+app.get("/getitem",isAuthenticated,function(req,res){
 
     var id = req.query.id;
     Forum.find({id:id},function(err,result){
          if(!err){
 
-            res.send(JSON.stringify({'result':result}));
-         }
+            //res.send(JSON.stringify({'result':result}));
+            res.json({result});
+        }
 
     });
 });
@@ -177,13 +186,13 @@ app.get("/getitem",function(req,res){
 
 // update
 
-app.get("/updateitem",function(req,res){
+app.post("/updateitem",function(req,res){
 
-    var id = req.query.id;
-    var updateinfo = req.query.updateinfo;
+    var subject = req.body.subject;
+    var updateinfo = req.body.updateinfo;
     
 
-    Forum.updateOne({id:id},{$set:{subject:updateinfo}},function(err,result){
+    Forum.updateOne({subject:subject},{$set:{subject:updateinfo}},function(err,result){
 
         if(!err){
             console.log("done update");
@@ -196,23 +205,18 @@ app.get("/updateitem",function(req,res){
 
 // Delete
 
-app.get("/deleteitem",function(req,res){
+app.post("/deleteitem",function(req,res){
 
-     var id=req.query.id;
-     Forum.findOneAndDelete({id:id},function(err,result){
+     var subject=req.body.subject;
+     Forum.findOneAndDelete({subject: subject},function(err,result){
          if(!err){
              console.log(result);
              res.send("sucess");
          }
      })
 
-})
-      
+})   
 
-
-      
-
-app.listen(3000,function(req,res){
+app.listen(process.env.PORT,function(req,res){
     console.log("server started");
 });
-
